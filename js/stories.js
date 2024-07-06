@@ -19,7 +19,7 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story.
  */
 
-function generateStoryMarkup(story, showDeleteBtn = false) {
+function generateStoryMarkup(story, showDeleteBtn = false, showStar = false) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
@@ -68,7 +68,7 @@ function putStoriesOnPage() {
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
-    const $story = generateStoryMarkup(story);
+    const $story = generateStoryMarkup(story, false, true);
     $allStoriesList.append($story);
   }
 
@@ -105,9 +105,9 @@ async function submitNewStory(evt) {
   evt.preventDefault();
 
   // grab all info from form
-  const title = $("#create-title").val();
-  const url = $("#create-url").val();
-  const author = $("#create-author").val();
+  const title = $("#story-title").val();
+  const url = $("#story-url").val();
+  const author = $("#story-author").val();
   const username = currentUser.username
   const storyData = { title, url, author, username };
 
@@ -137,7 +137,7 @@ function putUserStoriesOnPage() {
   } else {
     // loop through all of users stories and generate HTML for them
     for (let story of currentUser.ownStories) {
-      let $story = generateStoryMarkup(story, true);
+      let $story = generateStoryMarkup(story, true, false);
       $ownStories.append($story);
     }
   }
@@ -161,7 +161,7 @@ function putFavoritesListOnPage() {
   } else {
     // loop through all of users favorites and generate HTML for them
     for (let story of currentUser.favorites) {
-      const $story = generateStoryMarkup(story);
+      const $story = generateStoryMarkup(story, false, true);
       $favoritedStories.append($story);
     }
   }
